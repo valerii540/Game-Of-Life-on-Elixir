@@ -2,7 +2,15 @@ defmodule Cell do
   use GenServer
 
   defmodule State do
-    defstruct status: :alive, neighbours: [], name: "unnamed"
+    defstruct status: :alive, neighbours: []
+  end
+
+  defp alive?() do
+    if Enum.random(0..9) < 3, do: :alive, else: :dead
+  end
+
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, %Cell.State{status: alive?()}, opts)
   end
 
   @impl true
